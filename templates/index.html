@@ -10,6 +10,17 @@
     border-bottom: 1px dotted black;
   }
 
+  .footer {
+    border-top-style: outset;
+    position: fixed;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding-bottom: 10px;
+    background-color: #000000;
+    text-align: center;
+}
+
   #tooltip .tooltiptext {
     top: -5px;
     left: 105%;
@@ -57,4 +68,11 @@
     </dl>
   </form>
 </div>
+<footer class="footer">
+  {% block footer %}
+  <div class="container text-center" style="padding-top: 10px; color: #fff;">
+    <span>Developed with 💜 by Amaterasu team</span>
+  </div>
+  {% endblock %}
+</footer>
 {% endblock %}

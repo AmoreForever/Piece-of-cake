@@ -14,7 +14,6 @@ def tokenize(text):
 
 def stemming(self, tokens):
   stemmed_tokens = []
-  # PUT YOUR CODE HERE
   stemmer = PorterStemmer.PorterStemmer()
   stemmed_tokens = [stemmer.stem(t, 0, len(t) - 1) for t in tokens]
   return stemmed_tokens

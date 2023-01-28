@@ -26,22 +26,6 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
-
-
-@app.route('/about_us/', methods=['POST', 'GET'])
-def about_us():
-    return render_template('about_us.html')
-
-
-@app.route('/visualization/', methods=['POST', 'GET'])
-def visualization():
-    return render_template('visualization.html')
-
-
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
