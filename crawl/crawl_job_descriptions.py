@@ -1,5 +1,5 @@
 import re
-import parse_pdf.PorterStemmer as PorterStemmer
+import  PorterStemmer as PorterStemmer
 import urllib.request
 import numpy as np
 from urllib.parse import urlparse
@@ -15,7 +15,6 @@ def tokenize(text):
 
 def stemming(tokens):
   stemmed_tokens = []
-  # PUT YOUR CODE HERE
   stemmer = PorterStemmer.PorterStemmer()
   stemmed_tokens = [stemmer.stem(t, 0, len(t) - 1) for t in tokens]
   return stemmed_tokens
@@ -33,8 +32,8 @@ def crawl_text(url):
     page = urllib.request.urlopen(url)
     soup = BeautifulSoup.BeautifulSoup(page, "html.parser")
 
-    # prepare doc text
-    # text = soup.find(id="JobDescription").get_text()
+    #prepare doc text
+    #text = soup.find(id="JobDescription").get_text()
     texts = soup.findAll(text=True)
     visible_texts = filter(tag_visible, texts) 
 
