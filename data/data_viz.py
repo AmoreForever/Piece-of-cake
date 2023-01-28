@@ -11,7 +11,8 @@ import os
 def get_terms(file):
     df = pd.read_csv(file, encoding='utf-8')
     terms_column = df['Terms']
-    term_list = [term for terms_row in terms_column for term in parse_terms(terms_row)]
+    term_list = [
+        term for terms_row in terms_column for term in parse_terms(terms_row)]
     return term_list
 
 
@@ -32,7 +33,8 @@ def data_viz(file, title, picname):
     figure = plt.gcf()  # get current figure
     figure.set_size_inches(10, 8)
 
-    plt.savefig(os.path.join(os.pardir, 'static', 'viz', '{}.png'.format(picname)), dpi=100)
+    plt.savefig(os.path.join(os.pardir, 'static', 'viz',
+                '{}.png'.format(picname)), dpi=100)
     # plt.savefig(os.path.join('../static/viz/{}.png'.format(picname)), dpi=100)
 
     plt.show()
@@ -42,4 +44,5 @@ if __name__ == "__main__":
     data_viz('out.csv', 'All Roles', 'out')
     data_viz('computer-systems.csv', 'Computer Systems', 'computer-systems')
     data_viz('data-scientist.csv', 'Data Scientist', 'data-scientist')
-    data_viz('software-engineer.csv', 'Software Engineering', 'software-engineer')
+    data_viz('software-engineer.csv',
+             'Software Engineering', 'software-engineer')

@@ -10,5 +10,4 @@ result = pd.concat(frames)
 result.drop_duplicates()
 result.drop(result.columns[0], axis=1)
 
-result.to_csv('out.csv',index=False, quoting=csv.QUOTE_ALL)
-
+result.to_csv('out.csv', index=False, quoting=csv.QUOTE_ALL)
