@@ -6,7 +6,6 @@ from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 
 
-
 def convert_pdf_to_txt(path, output_path):
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
@@ -18,9 +17,9 @@ def convert_pdf_to_txt(path, output_path):
     password = ""
     maxpages = 0
     caching = True
-    pagenos=set()
+    pagenos = set()
 
-    for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password,caching=caching, check_extractable=True):
+    for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password, caching=caching, check_extractable=True):
         interpreter.process_page(page)
 
     text = retstr.getvalue()
@@ -29,10 +28,11 @@ def convert_pdf_to_txt(path, output_path):
     device.close()
     retstr.close()
     with open(output_path, 'wb') as output_f:
-      output_f.write(text)
-      output_f.close()
+        output_f.write(text)
+        output_f.close()
 
     return text
+
 
 if __name__ == "__main__":
     data_path = 'parse/resumes/'

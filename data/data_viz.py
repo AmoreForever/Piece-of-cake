@@ -35,7 +35,6 @@ def data_viz(file, title, picname):
 
     plt.savefig(os.path.join(os.pardir, 'static', 'viz',
                 '{}.png'.format(picname)), dpi=100)
-    # plt.savefig(os.path.join('../static/viz/{}.png'.format(picname)), dpi=100)
 
     plt.show()
 
