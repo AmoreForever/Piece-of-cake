@@ -1,0 +1,6 @@
+
+*.pyc
+*.pdf
+*.pyc
+data/__pycache__/match.cpython-310.pyc
+*.txt
