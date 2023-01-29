@@ -9,7 +9,7 @@ with open('keywords.json', 'r') as f:
 
 
 def tokenize(text):
-    clean_string = re.sub('[^a-z0-9-+# ]', ' ', text.lower())
+    clean_string = re.sub('[^a-z0-9-+# ]', ' ', text.lower().decode())
     tokens = clean_string.split()
     return tokens
 
@@ -38,7 +38,7 @@ def normalize(d):
 
 
 def return_index(file_path='parse_pdf/outputtext.txt'):
-    with open(file_path, 'r') as f:
+    with open(file_path, 'rb') as f:
         text = f.read()
         f.close()
 

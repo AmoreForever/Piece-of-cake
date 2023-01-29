@@ -41,8 +41,7 @@ def get_doc():
     # get the job listings
     for position in positions:
         for city_idx in range(len(cities)):
-            job_list.append(monster_crawl(
-                position, cities[city_idx], states[city_idx]))
+            job_list.append(monster_crawl(position, cities[city_idx], states[city_idx]))
 
     # flatten the job list
     flatten_job_list = list(itertools.chain.from_iterable(job_list))
@@ -134,8 +133,7 @@ def get_doc_and_export(infile, outfilename):
     print("Export to csv")
     with open('data/{}.csv'.format(outfilename), 'w')as csvfile:
         fieldnames = ['Name', 'Company', 'City', 'State', 'Url', 'Terms']
-        writer = csv.DictWriter(
-            csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
         writer.writeheader()
         for data in job_list:
             writer.writerow(data)
