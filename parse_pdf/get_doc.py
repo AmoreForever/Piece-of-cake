@@ -1,3 +1,13 @@
+#       ▄▀█ █▀▄▀█ █▀█ █▀█ █▀▀
+#      	█▀█ █░▀░█ █▄█ █▀▄ ██▄
+
+#         © Copyright 2022
+
+#       https://t.me/amorescam
+
+#     🔒 Licensed under the GNU GPLv3
+#     🧟‍♂️ Not for open source
+
 from crawl.monster_crawl import monster_crawl
 import parse_pdf.PorterStemmer as PorterStemmer
 import itertools
@@ -28,10 +38,6 @@ def stemming(tokens):
 
 
 def get_doc():
-    # positions = ["software-engineer", "data-scientist"]
-    # cities = ["San-Francisco", "Boston"]
-    # states = ["CA", "MA"]
-
     positions = ["software-engineer"]
     cities = ["San-Francisco"]
     states = ["CA"]
@@ -41,13 +47,14 @@ def get_doc():
     # get the job listings
     for position in positions:
         for city_idx in range(len(cities)):
-            job_list.append(monster_crawl(position, cities[city_idx], states[city_idx]))
+            job_list.append(monster_crawl(
+                position, cities[city_idx], states[city_idx]))
 
     # flatten the job list
     flatten_job_list = list(itertools.chain.from_iterable(job_list))
 
     # get keywords
-    with open('keywords.json', 'r') as f:
+    with open('keywords.json', 'r', encoding='utf-8') as f:
         keywords = set(stemming(json.load(f)))
         f.close()
 
@@ -133,7 +140,8 @@ def get_doc_and_export(infile, outfilename):
     print("Export to csv")
     with open('data/{}.csv'.format(outfilename), 'w')as csvfile:
         fieldnames = ['Name', 'Company', 'City', 'State', 'Url', 'Terms']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
+        writer = csv.DictWriter(
+            csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
         writer.writeheader()
         for data in job_list:
             writer.writerow(data)

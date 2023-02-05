@@ -1,3 +1,13 @@
+#       ▄▀█ █▀▄▀█ █▀█ █▀█ █▀▀
+#      	█▀█ █░▀░█ █▄█ █▀▄ ██▄
+
+#         © Copyright 2022
+
+#       https://t.me/amorescam
+
+#     🔒 Licensed under the GNU GPLv3
+#     🧟‍♂️ Not for open source
+
 import re
 import json
 import numpy as np

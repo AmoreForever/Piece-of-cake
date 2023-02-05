@@ -1,4 +1,13 @@
-import csv
+#       ▄▀█ █▀▄▀█ █▀█ █▀█ █▀▀
+#      	█▀█ █░▀░█ █▄█ █▀▄ ██▄
+
+#         © Copyright 2022
+
+#       https://t.me/amorescam
+
+#     🔒 Licensed under the GNU GPLv3
+#     🧟‍♂️ Not for open source
+
 import json
 import pandas as pd
 import numpy as np

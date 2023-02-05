@@ -1,3 +1,13 @@
+#       ▄▀█ █▀▄▀█ █▀█ █▀█ █▀▀
+#      	█▀█ █░▀░█ █▄█ █▀▄ ██▄
+
+#         © Copyright 2022
+
+#       https://t.me/amorescam
+
+#     🔒 Licensed under the GNU GPLv3
+#     🧟‍♂️ Not for open source
+
 from lxml import html
 import requests
 import re
@@ -36,7 +46,8 @@ def glassdoor_crawl(keyword, city):
     try:
         # Getting location id for search location
         print("Fetching location details")
-        location_response = requests.post(location_url, headers=location_headers, data=data).json()
+        location_response = requests.post(
+            location_url, headers=location_headers, data=data).json()
         place_id = location_response[0]['locationId']
         job_litsting_url = 'https://www.glassdoor.com/Job/jobs.htm'
         # Form data to get job results
@@ -50,7 +61,8 @@ def glassdoor_crawl(keyword, city):
 
         job_listings = []
         if place_id:
-            response = requests.post(job_litsting_url, headers=headers, data=data)
+            response = requests.post(
+                job_litsting_url, headers=headers, data=data)
             # extracting data from
             # https://www.glassdoor.com/Job/jobs.htm?suggestCount=0&suggestChosen=true&clickSource=searchBtn&typedKeyword=andr&sc.keyword=android+developer&locT=C&locId=1146821&jobType=
             parser = html.fromstring(response.text)
@@ -74,7 +86,8 @@ def glassdoor_crawl(keyword, city):
                 raw_salary = job.xpath(XPATH_SALARY)
 
                 # Cleaning data
-                job_name = ''.join(raw_job_name).strip('–') if raw_job_name else None
+                job_name = ''.join(raw_job_name).strip(
+                    '–') if raw_job_name else None
                 job_location = ''.join(raw_lob_loc) if raw_lob_loc else None
                 raw_state = re.findall(",\s?(.*)\s?", job_location)
                 state = ''.join(raw_state).strip()
@@ -117,10 +130,12 @@ if __name__ == "__main__":
 
     with open('glassdoor-%s-%s-job-results.csv' % (keyword, city), 'wb')as csvfile:
         fieldnames = ['Name', 'Company', 'City', 'State', 'Url']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
+        writer = csv.DictWriter(
+            csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
         writer.writeheader()
         if scraped_data:
             for data in scraped_data:
                 writer.writerow(data)
         else:
-            print("Your search for %s, in %s does not match any jobs" % (keyword, city))
+            print("Your search for %s, in %s does not match any jobs" %
+                  (keyword, city))

@@ -1,21 +1,32 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+#       ▄▀█ █▀▄▀█ █▀█ █▀█ █▀▀
+#      	█▀█ █░▀░█ █▄█ █▀▄ ██▄
+
+#         © Copyright 2022
+
+#       https://t.me/amorescam
+
+#     🔒 Licensed under the GNU GPLv3
+#     🧟‍♂️ Not for open source
+
 import os
 import numpy as np
-from os.path import abspath, dirname
 import pandas as pd
+from os.path import abspath, dirname
+from flask import Flask, render_template, request, flash, redirect, url_for
 from werkzeug.utils import secure_filename
 from parse_pdf.parse import parse_resume
 from data.match import match
-from flask import send_from_directory
+
 
 UPLOAD_FOLDER = 'static/files/'
 JOB_DOC_FILE = 'data/out.csv'
 ALLOWED_EXTENSIONS = set(['pdf'])
+SESSION_TYPE = 'redis'
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/files'
 app.secret_key = 'amorellma'
-SESSION_TYPE = 'redis'
 app.config.from_object(__name__)
 
 
@@ -57,11 +68,11 @@ def upload():
             pd.set_option('display.max_colwidth', -1)
             results = match(user_keywords, df)
             results.index = np.arange(1, len(results)+1)
-            results['Url'] = results['Url'].apply(lambda x: '<a href="{0}">link</a>'.format(x))
+            results['Url'] = results['Url'].apply(
+                lambda x: '<a href="{0}">link</a>'.format(x))
             results['Terms'] = results['Terms'].apply(lambda x: x[1:-1])
 
-            return render_template('result.html', tables=[results.to_html(escape=False)],
-                                   titles=['Name', 'Company', 'City', 'State', 'Url', 'Terms'])
+            return render_template('result.html', tables=[results.to_html(escape=False)], titles=['Name', 'Company', 'City', 'Url', 'Terms'])
     else:
         return render_template('index.html')
 

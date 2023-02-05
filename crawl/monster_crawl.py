@@ -1,3 +1,13 @@
+#       ▄▀█ █▀▄▀█ █▀█ █▀█ █▀▀
+#      	█▀█ █░▀░█ █▄█ █▀▄ ██▄
+
+#         © Copyright 2022
+
+#       https://t.me/amorescam
+
+#     🔒 Licensed under the GNU GPLv3
+#     🧟‍♂️ Not for open source
+
 from lxml import html
 import requests
 import re
@@ -56,7 +66,8 @@ def monster_crawl(keyword, city, state):
         raw_company = job.xpath(XPATH_COMPANY)
 
         # Clean name
-        job_name = ''.join(raw_job_name).replace('*', '').strip() if raw_job_name else None
+        job_name = ''.join(raw_job_name).replace(
+            '*', '').strip() if raw_job_name else None
 
         # Clean location
         job_location = ''.join(raw_lob_loc) if raw_lob_loc else None
@@ -83,7 +94,6 @@ def monster_crawl(keyword, city, state):
     return job_listings
 
 
-
 if __name__ == "__main__":
 
     ''' eg-:python whatever.py "Android developer" "new york" "NY" '''
@@ -105,10 +115,12 @@ if __name__ == "__main__":
     print("Writing data to output file")
     with open('url-{}.csv'.format(keyword), 'wb')as csvfile:
         fieldnames = ['Name', 'Company', 'City', 'State', 'Url']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
+        writer = csv.DictWriter(
+            csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
         writer.writeheader()
         if scraped_data:
             for data in scraped_data:
                 writer.writerow(data)
         else:
-            print("Your search for {}, in {},{} does not match any jobs".format(keyword, city, state))
+            print("Your search for {}, in {},{} does not match any jobs".format(
+                keyword, city, state))

@@ -1,7 +1,15 @@
+#       ▄▀█ █▀▄▀█ █▀█ █▀█ █▀▀
+#      	█▀█ █░▀░█ █▄█ █▀▄ ██▄
+
+#         © Copyright 2022
+
+#       https://t.me/amorescam
+
+#     🔒 Licensed under the GNU GPLv3
+#     🧟‍♂️ Not for open source
+
 import matplotlib.pyplot as plt
-import csv
 import pandas as pd
-import itertools
 from data.match import parse_terms
 from collections import Counter
 import numpy as np
