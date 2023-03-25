@@ -17,6 +17,7 @@
 import os
 import numpy as np
 import pandas as pd
+from gevent.pywsgi import WSGIServer
 from os.path import abspath, dirname
 from flask import Flask, render_template, request, flash, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -83,8 +84,6 @@ def upload():
         return render_template('index.html')
 
 
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 9999))
-    app.debug = True
-    print('Running on port ' + str(port))
-    app.run('0.0.0.0', port)
+if __name__ == "__main__":
+    http_server = WSGIServer(('', 1991), app)
+    http_server.serve_forever()
