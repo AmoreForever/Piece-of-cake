@@ -33,10 +33,10 @@ def monster_crawl(keyword, city, state):
                'Connection': 'keep-alive'
                }
 
-    print("Fetching {} at {},{}".format(keyword, city, state))
+    print(f"Fetching {keyword} at {city},{state}")
 
     # convert place id
-    place_id = "{}__2C-{}".format(city, state)
+    place_id = f"{city}__2C-{state}"
 
     # Form GET request like this one
     # https://www.monster.com/jobs/search/?q=software-engineer&where=Boston__2C-MA&page=1
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     # print(scraped_data)
 
     print("Writing data to output file")
-    with open('url-{}.csv'.format(keyword), 'wb')as csvfile:
+    with open(f'url-{keyword}.csv', 'wb') as csvfile:
         fieldnames = ['Name', 'Company', 'City', 'State', 'Url']
         writer = csv.DictWriter(
             csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
@@ -127,5 +127,4 @@ if __name__ == "__main__":
             for data in scraped_data:
                 writer.writerow(data)
         else:
-            print("Your search for {}, in {},{} does not match any jobs".format(
-                keyword, city, state))
+            print(f"Your search for {keyword}, in {city},{state} does not match any jobs")

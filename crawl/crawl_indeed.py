@@ -95,8 +95,7 @@ class PageRankIndex(object):
     def tokenize(self, text):
         # ADD CODE HERE
         clean_string = re.sub('[^a-z0-9 ]', ' ', text.lower())
-        tokens = clean_string.split()
-        return tokens
+        return clean_string.split()
 
     # ranked_search( text )
     # purpose: searches for the terms in "text" in our index and returns
@@ -141,7 +140,7 @@ def main(args):
     )
     for q in search_queries:
         results = index.ranked_search(q)
-        print("searching: %s -- results: %s" % (q, results))
+        print(f"searching: {q} -- results: {results}")
 
 
 # this little helper will call main() if this file is executed from the command

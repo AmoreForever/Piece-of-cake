@@ -55,7 +55,6 @@ def glassdoor_crawl(keyword, city):
         location_response = requests.post(
             location_url, headers=location_headers, data=data).json()
         place_id = location_response[0]['locationId']
-        job_litsting_url = 'https://www.glassdoor.com/Job/jobs.htm'
         # Form data to get job results
         data = {
             'clickSource': 'searchBtn',
@@ -65,8 +64,8 @@ def glassdoor_crawl(keyword, city):
             'jobType': ''
         }
 
-        job_listings = []
         if place_id:
+            job_litsting_url = 'https://www.glassdoor.com/Job/jobs.htm'
             response = requests.post(
                 job_litsting_url, headers=headers, data=data)
             # extracting data from
@@ -84,6 +83,7 @@ def glassdoor_crawl(keyword, city):
             XPATH_SALARY = './/span[@class="green small"]/text()'
 
             listings = parser.xpath(XPATH_ALL_JOB)
+            job_listings = []
             for job in listings:
                 raw_job_name = job.xpath(XPATH_NAME)
                 raw_job_url = job.xpath(XPATH_JOB_URL)
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     scraped_data = glassdoor_crawl(keyword, city)
     print("Writing data to output file")
 
-    with open('glassdoor-%s-%s-job-results.csv' % (keyword, city), 'wb')as csvfile:
+    with open(f'glassdoor-{keyword}-{city}-job-results.csv', 'wb') as csvfile:
         fieldnames = ['Name', 'Company', 'City', 'State', 'Url']
         writer = csv.DictWriter(
             csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
@@ -143,5 +143,4 @@ if __name__ == "__main__":
             for data in scraped_data:
                 writer.writerow(data)
         else:
-            print("Your search for %s, in %s does not match any jobs" %
-                  (keyword, city))
+            print(f"Your search for {keyword}, in {city} does not match any jobs")

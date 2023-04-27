@@ -33,14 +33,12 @@ from pprint import pprint
 
 def tokenize(text):
     clean_string = re.sub('[^a-z0-9-+# ]', ' ', text.lower())
-    tokens = clean_string.split()
-    return tokens
+    return clean_string.split()
 
 
 def stemming(tokens):
     stemmer = PorterStemmer.PorterStemmer()
-    stemmed_tokens = [stemmer.stem(t, 0, len(t) - 1) for t in tokens]
-    return stemmed_tokens
+    return [stemmer.stem(t, 0, len(t) - 1) for t in tokens]
 
 
 def get_doc():
@@ -52,10 +50,10 @@ def get_doc():
 
     # get the job listings
     for position in positions:
-        for city_idx in range(len(cities)):
-            job_list.append(monster_crawl(
-                position, cities[city_idx], states[city_idx]))
-
+        job_list.extend(
+            monster_crawl(position, cities[city_idx], states[city_idx])
+            for city_idx in range(len(cities))
+        )
     # flatten the job list
     flatten_job_list = list(itertools.chain.from_iterable(job_list))
 
@@ -144,7 +142,7 @@ def get_doc_and_export(infile, outfilename):
 
     # export into csv
     print("Export to csv")
-    with open('data/{}.csv'.format(outfilename), 'w')as csvfile:
+    with open(f'data/{outfilename}.csv', 'w') as csvfile:
         fieldnames = ['Name', 'Company', 'City', 'State', 'Url', 'Terms']
         writer = csv.DictWriter(
             csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)

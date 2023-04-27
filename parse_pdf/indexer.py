@@ -26,15 +26,13 @@ with open('keywords.json', 'r') as f:
 
 def tokenize(text):
     clean_string = re.sub('[^a-z0-9-+# ]', ' ', text.lower().decode())
-    tokens = clean_string.split()
-    return tokens
+    return clean_string.split()
 
 
 def stemming(self, tokens):
     stemmed_tokens = []
     stemmer = PorterStemmer.PorterStemmer()
-    stemmed_tokens = [stemmer.stem(t, 0, len(t) - 1) for t in tokens]
-    return stemmed_tokens
+    return [stemmer.stem(t, 0, len(t) - 1) for t in tokens]
 
 
 def index(tokens):
@@ -58,10 +56,7 @@ def return_index(file_path='parse_pdf/outputtext.txt'):
         text = f.read()
         f.close()
 
-    tokenized = tokenize(text)
-    # indexed = index(tokenized)
-
-    return tokenized
+    return tokenize(text)
 
 
 if __name__ == "__main__":

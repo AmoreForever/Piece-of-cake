@@ -26,23 +26,19 @@ from bs4 import BeautifulSoup, SoupStrainer
 
 def tokenize(text):
     clean_string = re.sub('[^a-z0-9- ]', ' ', text.lower())
-    tokens = clean_string.split()
-    return tokens
+    return clean_string.split()
 
 
 def stemming(tokens):
     stemmed_tokens = []
     stemmer = PorterStemmer.PorterStemmer()
-    stemmed_tokens = [stemmer.stem(t, 0, len(t) - 1) for t in tokens]
-    return stemmed_tokens
+    return [stemmer.stem(t, 0, len(t) - 1) for t in tokens]
 
 
 def tag_visible(element):
     if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]']:
         return False
-    if isinstance(element, Comment):
-        return False
-    return True
+    return not isinstance(element, Comment)
 
 
 def crawl_text(url):
