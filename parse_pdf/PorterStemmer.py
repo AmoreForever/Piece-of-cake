@@ -52,13 +52,10 @@ class PorterStemmer:
 
     def cons(self, i):
         """cons(i) is TRUE <=> b[i] is a consonant."""
-        if self.b[i] == 'a' or self.b[i] == 'e' or self.b[i] == 'i' or self.b[i] == 'o' or self.b[i] == 'u':
+        if self.b[i] in ['a', 'e', 'i', 'o', 'u']:
             return 0
         if self.b[i] == 'y':
-            if i == self.k0:
-                return 1
-            else:
-                return (not self.cons(i - 1))
+            return 1 if i == self.k0 else (not self.cons(i - 1))
         return 1
 
     def m(self):
@@ -100,18 +97,13 @@ class PorterStemmer:
 
     def vowelinstem(self):
         """vowelinstem() is TRUE <=> k0,...j contains a vowel"""
-        for i in range(self.k0, self.j + 1):
-            if not self.cons(i):
-                return 1
-        return 0
+        return next((1 for i in range(self.k0, self.j + 1) if not self.cons(i)), 0)
 
     def doublec(self, j):
         """doublec(j) is TRUE <=> j,(j-1) contain a double consonant."""
         if j < (self.k0 + 1):
             return 0
-        if (self.b[j] != self.b[j-1]):
-            return 0
-        return self.cons(j)
+        return 0 if (self.b[j] != self.b[j-1]) else self.cons(j)
 
     def cvc(self, i):
         """cvc(i) is TRUE <=> i-2,i-1,i has the form consonant - vowel - consonant
@@ -124,9 +116,7 @@ class PorterStemmer:
         if i < (self.k0 + 2) or not self.cons(i) or self.cons(i-1) or not self.cons(i-2):
             return 0
         ch = self.b[i]
-        if ch == 'w' or ch == 'x' or ch == 'y':
-            return 0
-        return 1
+        return 0 if ch in ['w', 'x', 'y'] else 1
 
     def ends(self, s):
         """ends(s) is TRUE <=> k0,...k ends with the string s."""
@@ -193,7 +183,7 @@ class PorterStemmer:
             elif self.doublec(self.k):
                 self.k = self.k - 1
                 ch = self.b[self.k]
-                if ch == 'l' or ch == 's' or ch == 'z':
+                if ch in ['l', 's', 'z']:
                     self.k = self.k + 1
             elif (self.m() == 1 and self.cvc(self.k)):
                 self.setto("e")
@@ -201,7 +191,7 @@ class PorterStemmer:
     def step1c(self):
         """step1c() turns terminal y to i when there is another vowel in the stem."""
         if (self.ends("y") and self.vowelinstem()):
-            self.b = self.b[:self.k] + 'i' + self.b[self.k+1:]
+            self.b = f'{self.b[:self.k]}i{self.b[self.k + 1:]}'
 
     def step2(self):
         """step2() maps double suffices to single ones.
@@ -286,33 +276,23 @@ class PorterStemmer:
     def step4(self):
         """step4() takes off -ant, -ence etc., in context <c>vcvc<v>."""
         if self.b[self.k - 1] == 'a':
-            if self.ends("al"):
-                pass
-            else:
+            if not self.ends("al"):
                 return
         elif self.b[self.k - 1] == 'c':
             if self.ends("ance"):
                 pass
-            elif self.ends("ence"):
-                pass
-            else:
+            elif not self.ends("ence"):
                 return
         elif self.b[self.k - 1] == 'e':
-            if self.ends("er"):
-                pass
-            else:
+            if not self.ends("er"):
                 return
         elif self.b[self.k - 1] == 'i':
-            if self.ends("ic"):
-                pass
-            else:
+            if not self.ends("ic"):
                 return
         elif self.b[self.k - 1] == 'l':
             if self.ends("able"):
                 pass
-            elif self.ends("ible"):
-                pass
-            else:
+            elif not self.ends("ible"):
                 return
         elif self.b[self.k - 1] == 'n':
             if self.ends("ant"):
@@ -321,44 +301,29 @@ class PorterStemmer:
                 pass
             elif self.ends("ment"):
                 pass
-            elif self.ends("ent"):
-                pass
-            else:
+            elif not self.ends("ent"):
                 return
         elif self.b[self.k - 1] == 'o':
-            if self.ends("ion") and (self.b[self.j] == 's' or self.b[self.j] == 't'):
+            if self.ends("ion") and self.b[self.j] in ['s', 't']:
                 pass
-            elif self.ends("ou"):
-                pass
-            # takes care of -ous
-            else:
+            elif not self.ends("ou"):
                 return
         elif self.b[self.k - 1] == 's':
-            if self.ends("ism"):
-                pass
-            else:
+            if not self.ends("ism"):
                 return
         elif self.b[self.k - 1] == 't':
             if self.ends("ate"):
                 pass
-            elif self.ends("iti"):
-                pass
-            else:
+            elif not self.ends("iti"):
                 return
         elif self.b[self.k - 1] == 'u':
-            if self.ends("ous"):
-                pass
-            else:
+            if not self.ends("ous"):
                 return
         elif self.b[self.k - 1] == 'v':
-            if self.ends("ive"):
-                pass
-            else:
+            if not self.ends("ive"):
                 return
         elif self.b[self.k - 1] == 'z':
-            if self.ends("ize"):
-                pass
-            else:
+            if not self.ends("ize"):
                 return
         else:
             return
@@ -411,20 +376,19 @@ if __name__ == '__main__':
     p = PorterStemmer()
     if len(sys.argv) > 1:
         for f in sys.argv[1:]:
-            infile = open(f, 'r')
-            while 1:
-                output = ''
-                word = ''
-                line = infile.readline()
-                if line == '':
-                    break
-                for c in line:
-                    if c.isalpha():
-                        word += c.lower()
-                    else:
-                        if word:
-                            output += p.stem(word, 0, len(word)-1)
-                            word = ''
-                        output += c.lower()
-                print(output,)
-            infile.close()
+            with open(f, 'r') as infile:
+                while 1:
+                    output = ''
+                    word = ''
+                    line = infile.readline()
+                    if line == '':
+                        break
+                    for c in line:
+                        if c.isalpha():
+                            word += c.lower()
+                        else:
+                            if word:
+                                output += p.stem(word, 0, len(word)-1)
+                                word = ''
+                            output += c.lower()
+                    print(output,)

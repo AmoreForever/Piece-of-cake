@@ -25,9 +25,9 @@ import os
 def get_terms(file):
     df = pd.read_csv(file, encoding='utf-8')
     terms_column = df['Terms']
-    term_list = [
-        term for terms_row in terms_column for term in parse_terms(terms_row)]
-    return term_list
+    return [
+        term for terms_row in terms_column for term in parse_terms(terms_row)
+    ]
 
 
 def data_viz(file, title, picname):
@@ -47,8 +47,9 @@ def data_viz(file, title, picname):
     figure = plt.gcf()  # get current figure
     figure.set_size_inches(10, 8)
 
-    plt.savefig(os.path.join(os.pardir, 'static', 'viz',
-                '{}.png'.format(picname)), dpi=100)
+    plt.savefig(
+        os.path.join(os.pardir, 'static', 'viz', f'{picname}.png'), dpi=100
+    )
 
     plt.show()
 

@@ -27,7 +27,7 @@ from data.match import match
 
 UPLOAD_FOLDER = 'static/files/'
 JOB_DOC_FILE = 'data/out.csv'
-ALLOWED_EXTENSIONS = set(['pdf'])
+ALLOWED_EXTENSIONS = {'pdf'}
 SESSION_TYPE = 'redis'
 
 
@@ -51,37 +51,35 @@ def allowed_file(filename):
 
 @app.route('/upload/', methods=['POST', 'GET'])
 def upload():
-    if request.method == 'POST':
-
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(url_for('upload'))
-
-        file = request.files['file']
-        # if user does not selgitect file, browser also
-        # submit a empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            basedir = abspath(dirname(__file__))
-            filepath = secure_filename(file.filename)
-            path = os.path.join(basedir, app.config['UPLOAD_FOLDER'], filepath)
-            file.save(path)
-
-            user_keywords = parse_resume(path)
-
-            df = pd.read_csv(JOB_DOC_FILE)
-            pd.set_option('display.max_colwidth', -1)
-            results = match(user_keywords, df)
-            results.index = np.arange(1, len(results)+1)
-            results['Url'] = results['Url'].apply(
-                lambda x: '<a href="{0}">link</a>'.format(x))
-            results['Terms'] = results['Terms'].apply(lambda x: x[1:-1])
-
-            return render_template('result.html', tables=[results.to_html(escape=False)], titles=['Name', 'Company', 'City', 'Url', 'Terms'])
-    else:
+    if request.method != 'POST':
         return render_template('index.html')
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(url_for('upload'))
+
+    file = request.files['file']
+    # if user does not selgitect file, browser also
+    # submit a empty part without filename
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        basedir = abspath(dirname(__file__))
+        filepath = secure_filename(file.filename)
+        path = os.path.join(basedir, app.config['UPLOAD_FOLDER'], filepath)
+        file.save(path)
+
+        user_keywords = parse_resume(path)
+
+        df = pd.read_csv(JOB_DOC_FILE)
+        pd.set_option('display.max_colwidth', -1)
+        results = match(user_keywords, df)
+        results.index = np.arange(1, len(results)+1)
+        results['Url'] = results['Url'].apply(
+            lambda x: '<a href="{0}">link</a>'.format(x))
+        results['Terms'] = results['Terms'].apply(lambda x: x[1:-1])
+
+        return render_template('result.html', tables=[results.to_html(escape=False)], titles=['Name', 'Company', 'City', 'Url', 'Terms'])
 
 
 if __name__ == "__main__":
